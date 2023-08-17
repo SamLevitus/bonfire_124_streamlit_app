@@ -4,18 +4,20 @@ import streamlit as st
 import pandas as pd
 import os
 
-filepath = os.path.join(Path(__file__).parents[1], 'data\oracle_cards.csv')
+# Establish a filepath to the oracle_cards.csv file
+filepath = os.path.join(Path(__file__).parents[1], 'data/oracle_cards.csv')
 df = pd.read_csv(filepath, low_memory=False)
 
-vist_to_use = ['scatterplot', 'histogram', 'bar char']
-type_vis = st.selectbox('Select the typeof visualization you would like')
+# Take in a user input:
+vis_to_use = ['scatterplot', 'histogram', 'bar chart']
+type_vis = st.selectbox('Select the type of Visualization you would like to see:', options=vis_to_use)
 
 if type_vis == 'scatterplot':
-    answer = st.selectbox('Selece a column to visualize on the x axis')
-    answer2 = st.selectbox('Selece a column to visualize on the y axis')
-   
+    answer = st.selectbox('Select a Column to Visualize on the X-axis:', options=sorted(list(df.columns)))
+    answer2 = st.selectbox('Select a column to visualize on the Y-axis:', options = sorted(list(df.columns)))
+# answer = st.selectbox('Select a Column to Visualize:', options=list(df.columns))
     if answer:
         try:
-            st.plotly_chart(px.scatter(df,x=answer, y=answer2, hover_data=['name'], use_containers=True))
+            st.plotly_chart(px.scatter(df, x=answer, y=answer2, hover_data=['name']), use_container_width=True)
         except BaseException:
-            print('Error visualizing this column')
+            print("Error visualizing this column")
